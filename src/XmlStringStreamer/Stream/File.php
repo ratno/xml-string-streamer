@@ -16,7 +16,11 @@ class File implements StreamInterface
             if (!file_exists($mixed)) {
                 throw new \Exception("File '$mixed' doesn't exist");
             }
-            $this->handle = fopen($mixed, "rb");
+						if(preg_match("(\.gz)$",$mixed)) {
+							$this->handle = gzopen($mixed, "rb");
+						} else {
+							$this->handle = fopen($mixed, "rb");
+						}
             $this->handle;
         } else if (get_resource_type($mixed) == "stream") {
             // Treat as file handle
